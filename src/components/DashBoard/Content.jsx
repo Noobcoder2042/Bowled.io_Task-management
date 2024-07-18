@@ -291,8 +291,8 @@ const Content = () => {
               >
                 <MenuItem value="">All</MenuItem>
                 <MenuItem value="Development">Development</MenuItem>
-                <MenuItem value="Design">Marketing</MenuItem>
-                <MenuItem value="Testing">Gaming</MenuItem>
+                <MenuItem value="Marketing">Marketing</MenuItem>
+                <MenuItem value="Gaming">Gaming</MenuItem>
                 <MenuItem value="Web3">Web3</MenuItem>
               </Select>
             </FormControl>
@@ -312,6 +312,8 @@ const Content = () => {
                   mt: 2,
                   overflow: "auto",
                 }}
+                onDragOver={handleDragOver}
+                onDrop={(event) => handleDrop(event, "Open")}
               >
                 <Typography variant="h5" gutterBottom>
                   Open

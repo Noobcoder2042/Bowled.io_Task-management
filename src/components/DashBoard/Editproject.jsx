@@ -20,7 +20,6 @@ const EditProject = ({ open, onClose, task }) => {
     task ? task.description : ""
   );
   const [editedDueDate, setEditedDueDate] = useState(task ? task.dueDate : "");
-  const [editedStatus, setEditedStatus] = useState(task ? task.status : "Open");
   const [editedTag, setEditedTag] = useState(task ? task.tag : "Marketing");
 
   console.log(task);
@@ -34,10 +33,6 @@ const EditProject = ({ open, onClose, task }) => {
 
   const handleDueDateChange = (event) => {
     setEditedDueDate(event.target.value);
-  };
-
-  const handleStatusChange = (event) => {
-    setEditedStatus(event.target.value);
   };
 
   const handleTagChange = (event) => {
@@ -101,19 +96,6 @@ const EditProject = ({ open, onClose, task }) => {
             shrink: true,
           }}
         />
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="edited-status-label">Status</InputLabel>
-          <Select
-            labelId="edited-status-label"
-            id="edited-status"
-            value={editedStatus}
-            onChange={handleStatusChange}
-          >
-            <MenuItem value="Open">Open</MenuItem>
-            <MenuItem value="In Progress">In Progress</MenuItem>
-            <MenuItem value="Completed">Completed</MenuItem>
-          </Select>
-        </FormControl>
         <FormControl fullWidth margin="normal">
           <InputLabel id="edited-tag-label">Tag</InputLabel>
           <Select

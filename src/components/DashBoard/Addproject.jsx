@@ -112,6 +112,11 @@ const Addproject = ({ openModal, handleCloseModal }) => {
       });
       setOpenAlert(true);
     }
+    setTaskTitle("");
+    setTaskDescription("");
+    setTaskDueDate("");
+    setTaskStatus("Open");
+    setTaskTag("");
   };
 
   const handleCloseAlert = (event, reason) => {

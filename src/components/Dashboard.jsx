@@ -85,6 +85,14 @@ function Dashboard() {
     setOpenAlert(false);
   };
 
+  const handleDashboardClick = () => {
+    setAlert({
+      message: "You are already on the dashboard",
+      severity: "info",
+    });
+    setOpenAlert(true);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -127,8 +135,7 @@ function Dashboard() {
         <Box sx={{ overflow: "auto" }}>
           <List>
             <ListItem
-              button
-              onClick={() => {}}
+              onClick={handleDashboardClick}
               sx={{
                 color: "white",
                 "&:hover": {
