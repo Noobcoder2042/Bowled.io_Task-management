@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,21 +13,38 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Modal,
-  Backdrop,
-  Fade,
-  TextField,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { AddBox, Notifications, Logout } from "@mui/icons-material";
 import { FaUserCircle } from "react-icons/fa";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Content from "./DashBoard/Content";
 import Addproject from "./DashBoard/Addproject";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 200;
 
 function Dashboard() {
   const [openModal, setOpenModal] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alert, setAlert] = useState({ message: "", severity: "" });
+  const [user, setUser] = useState(null);
+  const auth = getAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -38,9 +55,34 @@ function Dashboard() {
   };
 
   const handleAddProject = () => {
-    // Implement your logic here to handle adding a project
-    console.log("Adding a project...");
-    handleCloseModal(); // Close the modal after adding the project
+    handleCloseModal();
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setAlert({
+        message: "User signed out successfully",
+        severity: "success",
+      });
+      setOpenAlert(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (error) {
+      setAlert({
+        message: `Error signing out: ${error.message}`,
+        severity: "error",
+      });
+      setOpenAlert(true);
+    }
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenAlert(false);
   };
 
   return (
@@ -54,17 +96,17 @@ function Dashboard() {
         }}
       >
         <Toolbar>
-          <Avatar sx={{ mx: 2 }}>
-            <FaUserCircle />
+          <Avatar sx={{ mx: 2 }} src={user?.photoURL}>
+            {user?.photoURL ? null : <FaUserCircle />}
           </Avatar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-            Username
+            {user?.displayName || "Username"}
           </Typography>
           <IconButton color="inherit">
             <Notifications />
           </IconButton>
           <Typography variant="body1" sx={{ mx: 2 }}></Typography>
-          <Button color="inherit" startIcon={<Logout />}>
+          <Button color="inherit" startIcon={<Logout />} onClick={handleLogout}>
             Logout
           </Button>
         </Toolbar>
@@ -118,16 +160,30 @@ function Dashboard() {
           </List>
         </Box>
       </Drawer>
-      <Box sx={{ flexGrow: 1, p: 3 }}>
+      <Box sx={{ width: "100%" }}>
         <Content />
       </Box>
 
-      
       <Addproject
         openModal={openModal}
         handleCloseModal={handleCloseModal}
         handleAddProject={handleAddProject}
       />
+
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseAlert}
+          severity={alert.severity}
+          sx={{ width: "100%" }}
+        >
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

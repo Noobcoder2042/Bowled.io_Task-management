@@ -25,3 +25,16 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge, Opera */
+}
+
+/* Optional: Hide scrollbar for Firefox */
+* {
+  scrollbar-width: none; /* Firefox */
+}
+
+.box-with-scroll {
+  overflow: hidden; /* Hide overflow */
+}
