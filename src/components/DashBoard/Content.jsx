@@ -103,7 +103,6 @@ const Content = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    // Filter tasks based on search terms and status
     const filteredOpenTasks = tasks.filter(
       (task) =>
         task.status === "Open" &&
@@ -122,7 +121,6 @@ const Content = () => {
         task.title.toLowerCase().includes(searchTermDone.toLowerCase())
     );
 
-    // Update filteredTasks with merged filters
     setFilteredTasks({
       Open: filteredOpenTasks,
       InProgress: filteredInProgressTasks,
@@ -131,7 +129,6 @@ const Content = () => {
   }, [searchTermOpen, searchTermInpor, searchTermDone, tasks]);
 
   useEffect(() => {
-    // Filter tasks based on selected tag
     const filteredOpenTasks = tasks.filter(
       (task) =>
         task.status === "Open" &&
@@ -150,7 +147,6 @@ const Content = () => {
         (selectedTag === "" || task.tag === selectedTag)
     );
 
-    // Update filteredTasks with merged filters
     setFilteredTasks({
       Open: filteredOpenTasks,
       InProgress: filteredInProgressTasks,
